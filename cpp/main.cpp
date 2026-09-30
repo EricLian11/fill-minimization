@@ -4,9 +4,11 @@
 #include <iterator>
 #include <cassert>
 int eliminated_vertex(std::vector<std::unordered_set<int>>& adj, int v){
-    auto& nei_set = adj[v];
+    
+    auto& nei_set = adj[v]; // pass by reference
     int fill_count = 0;
-    for (auto it = nei_set.begin(); it != nei_set.end(); ++it){
+    for (auto it = nei_set.begin(); it != nei_set.end(); ++it){ 
+        //use iterators for less memory, instead of temp vector
         int v1 = *it;
         for (auto it2 = std::next(it); it2 != nei_set.end(); ++it2){
             int v2 = *it2;
@@ -22,6 +24,13 @@ int eliminated_vertex(std::vector<std::unordered_set<int>>& adj, int v){
     nei_set.clear();
     return fill_count;
 
+}
+int evaluate_ordering(std::vector<std::unordered_set<int>> adj, const std::vector<int>& ord){
+    int fc = 0;
+    for (int v : ord){
+        fc += eliminated_vertex(adj,v);
+    }
+    return fc;
 }
 int main(){
     std::vector<std::unordered_set<int>> adjacency(4);
