@@ -6,13 +6,13 @@
 #include <stdexcept>
 #include <cstddef>
 
-Graph :: Graph(std::vector<std::unordered_set<int>> adj) : adjacency(std::move(adj)), active(adjacency.size(),true){
+Graph :: Graph(std::vector<std::unordered_set<int>> adj) : adjacency(std::move(adj)), active(){
     this -> validate(); 
-    // Only need to write validate();, but included this -> for learning
-
+    for (int i = 0; i < adjacency.size(); i++){
+        active.insert(i);
+    }    
 }
 
-// active vector is created with adjacency.size(), so active size = adjacency size
 void Graph :: check_vertex(int v) const {
     if (v < 0 or v >= adjacency.size()) {
         throw std :: out_of_range("Invalid vertex ID");
@@ -25,7 +25,7 @@ void Graph :: add_edge(int u, int v){
     }
     this -> check_vertex(v);
     this -> check_vertex(u);
-    if (!active[u] or !active[v]){
+    if (!active.contains(u) or !active.contains(v)){
         throw std::invalid_argument("Tried to add an edge containing an eliminated vertex");
     }
     this -> adjacency[u].insert(v);
@@ -34,7 +34,7 @@ void Graph :: add_edge(int u, int v){
 
 int Graph :: eliminate_vertex(int v){
     this -> check_vertex(v);
-    if (!active[v]){
+    if (!active.contains(v)){
         throw std::invalid_argument("Tried to eliminate an already eliminated vertex");
     }
     auto& nei_set = this -> adjacency[v];
@@ -51,7 +51,7 @@ int Graph :: eliminate_vertex(int v){
         }
         this -> adjacency[v1].erase(v);
     }
-    this -> active[v] = false;
+    this -> active.erase(v);
     this -> adjacency[v].clear();
     return fc;
 }
@@ -63,11 +63,11 @@ int Graph :: degree(int v) const {
 
 bool Graph :: is_active(int v) const {
     this -> check_vertex(v);
-    return this -> active[v];
+    return active.contains(v);
 }
 
 int Graph :: vertex_count() const {
-    return this -> active.size();
+    return this -> adjacency.size();
 }
 
 void Graph :: validate() const {
@@ -108,5 +108,9 @@ void Graph :: validate() const {
     Keep a counter of total arrows from smaller to larger and larger to smaller
     If equal, then done. 
 */
+}
+
+const std::unordered_set<int>& Graph :: active_vertices() const {
+    return active;
 }
 
