@@ -5,6 +5,7 @@ class Graph {
 private:
     std::vector<std::unordered_set<int>> adjacency;
     std::vector<bool> active;
+    void check_vertex(int v) const;
 public:
     
     Graph(std::vector<std::unordered_set<int>> adj);
