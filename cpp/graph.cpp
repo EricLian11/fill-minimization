@@ -110,6 +110,23 @@ void Graph :: validate() const {
 */
 }
 
+int Graph :: fill_cost(int v) const {
+    auto& nei_set = adjacency[v];
+    int fc = 0;
+    for (auto it = nei_set.begin(); it != nei_set.end(); ++it){
+        for (auto it2 = std::next(it); it2 != nei_set.end(); ++it2){
+            check_vertex(v);
+            if (!active.contains(v)) {
+                throw std::runtime_error("Checking an eliminated vertex");
+            }
+            if (!adjacency[*it].contains(*it2)){
+                fc++;
+            }
+        }
+    }
+    return fc;
+}
+
 const std::unordered_set<int>& Graph :: active_vertices() const {
     return active;
 }

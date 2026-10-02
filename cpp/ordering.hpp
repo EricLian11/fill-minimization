@@ -6,3 +6,7 @@ int evaluate_ordering(Graph graph, const std::vector<int>& ord);
 
 //Minimum degree heuristic algorithm, returns ordering
 std::vector<int> minimum_degree_ordering(Graph graph);
+
+//Min fill heuristic algorithm, returns ordering
+std::vector<int> minimum_fillcost_ordering(Graph graph);
+

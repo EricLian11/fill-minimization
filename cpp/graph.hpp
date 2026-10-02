@@ -33,6 +33,9 @@ public:
     //Time = O(V+E)
     void validate() const;
 
+    //check the fill cost of removing a vertex without modifying graph
+    int fill_cost(int v) const;
+
     //read-only accessor of active vertices
     const std::unordered_set<int>& active_vertices() const;
 

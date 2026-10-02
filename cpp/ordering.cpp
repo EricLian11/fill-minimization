@@ -24,7 +24,7 @@ std::vector<int> minimum_degree_ordering(Graph graph){
     int min_deg;
     int min_deg_v;
     int v_deg;
-    
+
     std::vector<int> res(total_active);
     while (removed < total_active){
         min_deg = INT_MAX;
@@ -39,6 +39,32 @@ std::vector<int> minimum_degree_ordering(Graph graph){
         }
         res[removed] = min_deg_v;
         graph.eliminate_vertex(min_deg_v);
+        removed++;
+    }
+    return res;
+}
+
+std::vector<int> minimum_fillcost_ordering(Graph graph){
+    int total_active = graph.active_vertices().size();
+    int removed = 0;
+    int min_fc;
+    int min_fc_v;
+    int v_fc;
+    
+    std::vector<int> res(total_active);
+    while (removed < total_active){
+        min_fc = INT_MAX;
+        min_fc_v = INT_MAX;
+        for (int v: graph.active_vertices()){
+            v_fc = graph.fill_cost(v);
+            if (v_fc < min_fc) {
+                min_fc_v = v;
+                min_fc = v_fc;
+            }
+            else if (v_fc == min_fc and v < min_fc_v) min_fc_v = v;
+        }
+        res[removed] = min_fc_v;
+        graph.eliminate_vertex(min_fc_v);
         removed++;
     }
     return res;
