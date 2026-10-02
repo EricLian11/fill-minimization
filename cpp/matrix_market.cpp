@@ -29,7 +29,7 @@ CoordinateMatrix read_matrix_market(const std::string& path){
     if (symmetric != "symmetric") {
         throw std::runtime_error("Matrix is not symmetric");
     }
-
+    //There are sometimes comment lines between the header and the dimension line, skip those with this
     input >> std::ws;
     std::string comment;
     while (input.peek() == '%'){
@@ -37,6 +37,7 @@ CoordinateMatrix read_matrix_market(const std::string& path){
         input >> std::ws;
     }
 
+    //Dimension line
     int rows,columns,num_entries;
     if (!(input >> rows >> columns >> num_entries)) {
         throw std::runtime_error("Matrix summary missing");
@@ -45,7 +46,7 @@ CoordinateMatrix read_matrix_market(const std::string& path){
         throw std::runtime_error("Matrix dimensions invalid");
     }
 
-
+    //All data lines
     int row, column;
     double value;
     std::vector<MatrixEntry> entries(num_entries);
@@ -71,11 +72,12 @@ Graph graph_from_matrix(const CoordinateMatrix& cm){
     }
 
     std::vector<std::unordered_set<int>> adjacency(cm.rows);
-
+    //auto& entry is already const from the argument, but for clarity 
     for (const auto& entry : cm.entries) {
         if (entry.row < 0 or entry.row >= cm.rows or entry.column < 0 or entry.column >= cm.columns) {
             throw std::runtime_error("Invalid matrix data");
         }
+        //ignore self.loop and zero weight edges
         if (entry.row == entry.column or entry.value == 0) continue;
         
         adjacency[entry.row].insert(entry.column);

@@ -24,6 +24,7 @@ std::vector<int> minimum_degree_ordering(Graph graph){
     int min_deg;
     int min_deg_v;
     int v_deg;
+    
     std::vector<int> res(total_active);
     while (removed < total_active){
         min_deg = INT_MAX;
