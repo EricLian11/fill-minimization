@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <utility>
-
+#include <unordered_set>
 CoordinateMatrix read_matrix_market(const std::string& path){
     std::ifstream input(path);
     if (!input){
@@ -63,4 +63,24 @@ CoordinateMatrix read_matrix_market(const std::string& path){
     CoordinateMatrix cm{rows,columns,std::move(entries)};
     return cm;
 
+}
+
+Graph graph_from_matrix(const CoordinateMatrix& cm){
+    if (cm.rows != cm.columns or cm.rows < 0 or cm.columns < 0) {
+        throw std::runtime_error("Invalid matrix dimensions");
+    }
+
+    std::vector<std::unordered_set<int>> adjacency(cm.rows);
+
+    for (const auto& entry : cm.entries) {
+        if (entry.row < 0 or entry.row >= cm.rows or entry.column < 0 or entry.column >= cm.columns) {
+            throw std::runtime_error("Invalid matrix data");
+        }
+        if (entry.row == entry.column or entry.value == 0) continue;
+        
+        adjacency[entry.row].insert(entry.column);
+        adjacency[entry.column].insert(entry.row);
+    }
+    Graph graph(std::move(adjacency));
+    return graph;
 }
