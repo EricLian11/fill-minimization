@@ -4,7 +4,7 @@ from pathlib import Path
 @dataclass
 class ExperimentConfig:
     executable_path : Path
-    runs : list[tuple[Path,str]]
+    runs : list[tuple[Path,str,int]]
     output_path : Path
     
 @dataclass

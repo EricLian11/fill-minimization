@@ -9,7 +9,7 @@ import argparse
 def load_config(path : Path) -> ExperimentConfig:
     with open(path, "r") as file:
         data = json.load(file)
-        exp = ExperimentConfig(Path(data["executable_path"]),[(Path(matrix),method) for matrix,method in data["runs"]],Path(data["output_path"]))
+        exp = ExperimentConfig(Path(data["executable_path"]),[(Path(matrix),method,rep) for matrix,method,rep in data["runs"]],Path(data["output_path"]))
         return exp
 
 def run_experiment(exp : ExperimentConfig):

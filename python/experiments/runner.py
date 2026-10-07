@@ -10,6 +10,7 @@ def run_once(ex_path, matrix, method) -> RunResult:
 
 def run_all(experiment : ExperimentConfig) -> ExperimentResults:
     exp_res = ExperimentResults()
-    for matrix,method in experiment.runs:
-        exp_res.results.append(run_once(experiment.executable_path,matrix,method))
+    for matrix,method,rep in experiment.runs:
+        for i in range(rep):
+            exp_res.results.append(run_once(experiment.executable_path,matrix,method))
     return exp_res
