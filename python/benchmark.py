@@ -1,6 +1,17 @@
-import subprocess
-result = subprocess.run(["./build-release/fillmin","./data/benchmarks/bcsstk01.mtx", "mf"],capture_output = True,text=True, check=True)
-print(result.stdout)
-lines = result.stdout.splitlines()
-elapsed_ms = float(lines[0])
-fill_count = float(lines[1])
+from experiments.analysis import run_analysis
+from experiments.results import ExperimentResults,ExperimentConfig,RunResult
+from experiments.runner import run_all,run_once
+from experiments.storage import write_out
+import json 
+from pathlib import Path
+
+def load_config(path : Path) -> ExperimentConfig:
+    with open(path, "r") as file:
+        data = json.load(file)
+        exp = ExperimentConfig(Path(data["executable_path"]),[(Path(matrix),method) for matrix,method in data["runs"]],Path(data["output_path"]))
+        return exp
+def run_experiment(exp : ExperimentConfig):
+    res = run_all(exp)
+    write_out(res,exp.output_path)
+    summary = run_analysis(exp.output_path)
+    return summary 
