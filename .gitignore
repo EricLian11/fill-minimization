@@ -2,3 +2,5 @@
 .DS_Store
 /data/benchmarks
 /build-release/
+*.pyc
+*.csv

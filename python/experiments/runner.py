@@ -1,4 +1,4 @@
-from results import ExperimentConfig, RunResult, ExperimentResults
+from .results import ExperimentConfig, RunResult, ExperimentResults
 import subprocess
 
 def run_once(ex_path, matrix, method) -> RunResult:

@@ -1,0 +1,5 @@
+{
+    "executable_path" : "build-release/fillmin",
+    "runs" : [["data/benchmarks/bcsstk01.mtx", "mf"],["data/benchmarks/bcsstk01.mtx", "md"]],
+    "output_path" : "results/baseline.csv"
+}

@@ -1,4 +1,4 @@
-from results import ExperimentResults, RunResult
+from .results import ExperimentResults, RunResult
 from pathlib import Path
 import csv
 
